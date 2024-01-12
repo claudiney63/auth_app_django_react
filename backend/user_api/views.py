@@ -7,14 +7,14 @@ from rest_framework import status, permissions
 from .validations import custom_validation, validate_email, validate_password
 
 class UserRegister(APIView):
-    permissions_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     def post(self, request):
         clean_data = custom_validation(request.data)
-        serisalizer = UserRegisterSerializer(data=clean_data)
-        if serisalizer.is_valid(raise_exception=True):
-            user = serisalizer.create(clean_data)
+        serializers = UserRegisterSerializer(data=clean_data)
+        if serializers.is_valid(raise_exception=True):
+            user = serializers.create(clean_data)
             if user:
-                return Response(serisalizer.data, status=status.HTTP_201_CREATED)
+                return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class UserLogin(APIView):
